@@ -229,11 +229,11 @@ public class TagBalancingTest extends TestCase {
     throws IOException {
     	final char[] buffer = new char[8192];
     	int bufferLength = 0;
-    	StringBuffer textBuffer = null;
+        StringBuilder textBuffer = null;
     	while (bufferLength != -1) {
     		bufferLength = rdr.read(buffer);
     		if (bufferLength > 0) {
-    			textBuffer = (textBuffer == null) ? new StringBuffer() : textBuffer;
+    			textBuffer = (textBuffer == null) ? new StringBuilder() : textBuffer;
     			textBuffer.append(new String(buffer, 0, bufferLength));
     		}
     	}

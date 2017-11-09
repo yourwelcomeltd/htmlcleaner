@@ -200,7 +200,7 @@ public class XPather {
 
     private String flatten(int from, int to) {
         if (from <= to) {
-            StringBuffer result = new StringBuffer();
+            StringBuilder result = new StringBuilder();
             for (int i = from; i <= to; i++) {
                 result.append(tokenArray[i]);
             }

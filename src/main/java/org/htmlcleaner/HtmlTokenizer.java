@@ -64,7 +64,7 @@ public class HtmlTokenizer {
     private transient int _col = 1;
     
 
-    private transient StringBuffer _saved = new StringBuffer(512);
+    private transient StringBuilder _saved = new StringBuilder(512);
 
     private transient boolean _isLateForDoctype;
     private transient DoctypeToken _docType;
@@ -414,13 +414,14 @@ public class HtmlTokenizer {
     	boolean isSpecialEmpty = true;
 
     	while ( !isAllRead() ) {
-    		if (Thread.currentThread().isInterrupted()) {
+    		/*if (Thread.currentThread().isInterrupted()) {
     			this.handleInterruption();
     			_tokenList.clear();
     			_namespacePrefixes.clear();
     			_reader.close();
             	return;
-            }
+            }*/
+
     		// resets all the runtime values
     		_saved.delete(0, _saved.length());
     		_currentTagToken = null;
@@ -644,7 +645,7 @@ public class HtmlTokenizer {
             return null;
         }
 
-        StringBuffer identifierValue = new StringBuffer();
+        StringBuilder identifierValue = new StringBuilder();
 
         while ( !isAllRead() && (attribute && isHtmlAttributeIdentifierChar() || !attribute && isHtmlElementIdentifier()) ) {
             saveCurrent();
@@ -745,7 +746,7 @@ public class HtmlTokenizer {
         boolean isQuoteMode = false;
         boolean isAposMode = false;
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         if ( isChar('\'') ) {
             isAposMode = true;

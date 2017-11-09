@@ -20,7 +20,7 @@ public class VisitorTest extends TestCase {
     }
 
     public void testNodeTraverse() throws IOException, XPatherException {
-        final StringBuffer superstar = new StringBuffer();
+        final StringBuilder superstar = new StringBuilder();
         node.traverse(new TagNodeVisitor() {
             public boolean visit(TagNode parentNode, HtmlNode node) {
                 if (node instanceof TagNode) {

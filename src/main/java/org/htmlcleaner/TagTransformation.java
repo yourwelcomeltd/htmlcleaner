@@ -206,7 +206,7 @@ public class TagTransformation {
             return template;
         }
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         int startIndex = template.indexOf(VAR_START);
         int endIndex = -1;

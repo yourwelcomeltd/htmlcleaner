@@ -770,7 +770,7 @@ public class Utils {
     // Replaces entities with actual characters
     //
     public static String deserializeEntities(String str, boolean recognizeUnicodeChars) {
-    	StringBuffer buf = new StringBuffer(str);
+        StringBuilder buf = new StringBuilder(str);
         SpecialEntities entities = SpecialEntities.INSTANCE;
         int entityStart = -1;
         boolean numericEntity = false;
