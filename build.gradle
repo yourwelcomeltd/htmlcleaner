@@ -23,6 +23,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'config/MANIFEST.MF'
+    }
+
+    sourceSets {
+        main {
+            java {
+                exclude 'org/htmlcleaner/HtmlCleanerForAnt.java'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -32,6 +44,5 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
 
-    compile group: 'org.apache.ant', name: 'ant', version: '1.10.1'
     compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 }
