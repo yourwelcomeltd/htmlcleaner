@@ -35,10 +35,13 @@ package org.htmlcleaner;
 public class CData extends ContentNode implements HtmlNode {
 	
     public static final String BEGIN_CDATA = "<![CDATA[";
+	public static final String BEGIN_CDATA_LOWER = "<![CDATA[";
     public static final String END_CDATA = "]]>";
     public static final String SAFE_BEGIN_CDATA = "/*<![CDATA[*/";
+	public static final String SAFE_BEGIN_CDATA_LOWER = "/*<![CDATA[*/";
     public static final String SAFE_END_CDATA = "/*]]>*/";
     public static final String SAFE_BEGIN_CDATA_ALT = "//<![CDATA[";
+	public static final String SAFE_BEGIN_CDATA_ALT_LOWER = "//<![CDATA[";
     public static final String SAFE_END_CDATA_ALT = "//]]>";
 	
 	public CData(String content){

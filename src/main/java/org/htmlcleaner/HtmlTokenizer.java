@@ -57,6 +57,7 @@ public class HtmlTokenizer {
 
     private BufferedReader _reader;
     private char[] _working = new char[WORKING_BUFFER_SIZE];
+    private char[] _workingLowerCase = new char[WORKING_BUFFER_SIZE];
 
     private transient int _pos;
     private transient int _len = -1;
@@ -107,6 +108,7 @@ public class HtmlTokenizer {
         if (_len == -1 && _pos + neededChars >= WORKING_BUFFER_SIZE) {
             int numToCopy = WORKING_BUFFER_SIZE - _pos;
             System.arraycopy(_working, _pos, _working, 0, numToCopy);
+            System.arraycopy(_workingLowerCase, _pos, _workingLowerCase, 0, numToCopy);
             _pos = 0;
 
             int expected = WORKING_BUFFER_SIZE - numToCopy;
@@ -115,6 +117,10 @@ public class HtmlTokenizer {
             int offset = numToCopy;
             do {
                 charsRead = _reader.read(_working, offset, expected);
+                for(int copyIndex = 0; copyIndex < charsRead; ++copyIndex)
+                {
+                    _workingLowerCase[offset + copyIndex] = _working[offset + copyIndex];
+                }
                 if (charsRead >= 0) {
                     size += charsRead;
                     offset += charsRead;
@@ -128,13 +134,19 @@ public class HtmlTokenizer {
             }
 
             // convert invalid XML characters to spaces or the UTF replacement character
+            // Also lowercase our lowecase working copy
             for (int i = 0; i < (_len >= 0 ? _len : WORKING_BUFFER_SIZE); i++) {
                 int ch = _working[i];
                 if (ch >= 1 && ch <= 32 && ch != 10 && ch != 13) {
                     _working[i] = ' ';
+                    _workingLowerCase[i] = ' ';
                 }
-                if (ch == 0){
-                	_working[i] = '\uFFFD'; 
+                else if (ch == 0){
+                	_working[i] = '\uFFFD';
+                    _workingLowerCase[i] = '\uFFFD';
+                }
+                else {
+                    _workingLowerCase[i] = Character.toLowerCase(_workingLowerCase[i]);
                 }
             }
         }
@@ -176,8 +188,13 @@ public class HtmlTokenizer {
         }
 
         for (int i = 0; i < valueLen; i++) {
-        	char ch1 = Character.toLowerCase( value.charAt(i) );
-        	char ch2 = Character.toLowerCase( _working[_pos + i] );
+
+            // startsWith is now always called with a lower case value, so no need to lower case it
+        	char ch1 = value.charAt(i);
+
+            // Also, we have a lower case copy of the working area
+        	char ch2 = _workingLowerCase[_pos + i];
+
         	if (ch1 != ch2) {
         		return false;
         	}
@@ -218,7 +235,7 @@ public class HtmlTokenizer {
             return false;
         }
 
-        return Character.toLowerCase(ch) == Character.toLowerCase(_working[position]);
+        return Character.toLowerCase(ch) == _workingLowerCase[position];
     }
 
     /**
@@ -436,7 +453,7 @@ public class HtmlTokenizer {
     				tagEnd();
     			} else if ( isSpecialEmpty && startsWith("<!--") ) {
     				comment();
-    			} else if ( startsWith(CData.SAFE_BEGIN_CDATA) || startsWith(CData.BEGIN_CDATA) || startsWith(CData.SAFE_BEGIN_CDATA_ALT)) { 
+    			} else if ( startsWith(CData.SAFE_BEGIN_CDATA_LOWER) || startsWith(CData.BEGIN_CDATA_LOWER) || startsWith(CData.SAFE_BEGIN_CDATA_ALT_LOWER)) {
     				cdata();
     			} else {
     				boolean isTokenAdded = content();
@@ -464,7 +481,7 @@ public class HtmlTokenizer {
     			} else if ( startsWith("</") && isElementIdentifierStartChar(_pos + 2) ) {
     				_isLateForDoctype = true;
     				tagEnd();
-    			} else if ( startsWith(CData.SAFE_BEGIN_CDATA) || startsWith(CData.BEGIN_CDATA) || startsWith(CData.SAFE_BEGIN_CDATA_ALT)) { 
+    			} else if ( startsWith(CData.SAFE_BEGIN_CDATA_LOWER) || startsWith(CData.BEGIN_CDATA_LOWER) || startsWith(CData.SAFE_BEGIN_CDATA_ALT_LOWER)) {
     				cdata();
     			} else if ( startsWith("<!--") ) {
     				comment();
@@ -792,7 +809,7 @@ public class HtmlTokenizer {
             saveCurrent();
             go();
             
-            if (startsWith(CData.SAFE_BEGIN_CDATA) || startsWith(CData.BEGIN_CDATA) || startsWith(CData.SAFE_BEGIN_CDATA_ALT)) {
+            if (startsWith(CData.SAFE_BEGIN_CDATA_LOWER) || startsWith(CData.BEGIN_CDATA_LOWER) || startsWith(CData.SAFE_BEGIN_CDATA_ALT_LOWER)) {
             	break;
             }
  
@@ -872,9 +889,9 @@ public class HtmlTokenizer {
     		}
     	}
     	
-    	if (startsWith(CData.SAFE_BEGIN_CDATA)){
+    	if (startsWith(CData.SAFE_BEGIN_CDATA_LOWER)){
     		go(CData.SAFE_BEGIN_CDATA.length());
-    	} else if (startsWith(CData.SAFE_BEGIN_CDATA_ALT)){
+    	} else if (startsWith(CData.SAFE_BEGIN_CDATA_ALT_LOWER)){
     		go (CData.SAFE_BEGIN_CDATA_ALT.length());
     	} else {
     		go(CData.BEGIN_CDATA.length());
@@ -883,7 +900,7 @@ public class HtmlTokenizer {
     	int cdataStart = _saved.length();
     	
         while ( !isAllRead() && 
-        		!startsWith(CData.SAFE_END_CDATA) && 
+        		!startsWith(CData.SAFE_END_CDATA) &&
         		!startsWith(CData.END_CDATA) && 
         		!startsWith(CData.SAFE_END_CDATA_ALT)
         		) {
