@@ -160,7 +160,8 @@ public class ConfigFileTagProvider extends HashMap implements ITagInfoProvider {
         }
 
         @Override
-        public void characters(char[] ch, int start, int length) throws SAXException {
+        public void characters(char[] ch, int start, int length)
+        {
             if (tagInfo != null) {
                 String value = new String(ch, start, length).trim();
                 if ( "fatal-tags".equals(dependencyName) ) {
@@ -208,7 +209,8 @@ public class ConfigFileTagProvider extends HashMap implements ITagInfoProvider {
         }
 
         @Override
-        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        public void startElement(String uri, String localName, String qName, Attributes attributes)
+        {
             if ( "tag".equals(qName) ) {
                 String name = attributes.getValue("name");
                 String content = attributes.getValue("content");
@@ -239,7 +241,8 @@ public class ConfigFileTagProvider extends HashMap implements ITagInfoProvider {
         }
 
         @Override
-        public void endElement(String uri, String localName, String qName) throws SAXException {
+        public void endElement(String uri, String localName, String qName)
+        {
             if ( "tag".equals(qName) ) {
                 if (tagInfo != null) {
                     tagInfoMap.put(tagInfo.getName(), tagInfo);

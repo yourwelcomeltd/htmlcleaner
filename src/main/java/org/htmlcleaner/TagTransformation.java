@@ -162,8 +162,8 @@ public class TagTransformation {
                 Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry<String, String> entry = iterator.next();
-                    String attName = (String) entry.getKey();
-                    String template = (String) entry.getValue();
+                    String attName = entry.getKey();
+                    String template = entry.getValue();
                     if (template == null) {
                         newAttributes.remove(attName);
                     } else {

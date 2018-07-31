@@ -141,7 +141,7 @@ public class TagNode extends TagToken implements HtmlNode {
     	//
     	// We have to do case-insensitive comparisons
     	//	
-        return attName != null ? (String) getAttributesInLowerCase().get(attName.toLowerCase()) : null;
+        return attName != null ? getAttributesInLowerCase().get(attName.toLowerCase()) : null;
     }
 
     /**
@@ -345,7 +345,7 @@ public class TagNode extends TagToken implements HtmlNode {
         List<TagNode> childTagList = getChildTagList();
         TagNode childrenArray[] = new TagNode[childTagList.size()];
         for (int i = 0; i < childTagList.size(); i++) {
-            childrenArray[i] = (TagNode) childTagList.get(i);
+            childrenArray[i] = childTagList.get(i);
         }
 
         return childrenArray;
@@ -545,7 +545,7 @@ public class TagNode extends TagToken implements HtmlNode {
         if (list == null) {
             array = new TagNode[0];
         } else {
-            array = (TagNode[]) list.toArray(new TagNode[list.size()]);
+            array = list.toArray(new TagNode[list.size()]);
         }
         return array;
     }
@@ -628,7 +628,7 @@ public class TagNode extends TagToken implements HtmlNode {
      * @return True if element is removed (if it is not root node).
      */
     public boolean removeFromTree() {
-        return parent != null ? parent.removeChild(this) : false;
+        return parent != null && parent.removeChild(this);
     }
 
     /**

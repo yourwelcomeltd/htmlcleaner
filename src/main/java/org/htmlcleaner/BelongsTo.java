@@ -44,7 +44,7 @@ public enum BelongsTo {
     HEAD("head"),
     BODY("body");
     private final String dbCode;
-    private BelongsTo(String dbCode) {
+    BelongsTo(String dbCode) {
         this.dbCode =dbCode;
     }
     

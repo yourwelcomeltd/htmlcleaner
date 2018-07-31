@@ -293,9 +293,7 @@ public class HtmlTokenizer {
         } 
     	
         char ch = _working[position];
-        if (ch == '<') return false;
-        
-        return true;
+        return ch != '<';
     }
     
     /**
@@ -328,11 +326,9 @@ public class HtmlTokenizer {
         	return false;
         }
         
-        if (Character.isISOControl(ch)) return false;       
-        
-        if (!Character.isDefined(ch)) return false;
-        
-        return true;
+        if (Character.isISOControl(ch)) return false;
+
+        return Character.isDefined(ch);
 
     }
 
@@ -458,7 +454,7 @@ public class HtmlTokenizer {
     			} else {
     				boolean isTokenAdded = content();
     				if (isSpecialEmpty && isTokenAdded) {
-    					final BaseToken lastToken = (BaseToken) _tokenList.get(_tokenList.size() - 1);
+    					final BaseToken lastToken = _tokenList.get(_tokenList.size() - 1);
     					if (lastToken != null) {
     						final String lastTokenAsString = lastToken.toString();
     						if (lastTokenAsString != null && lastTokenAsString.trim().length() > 0) {

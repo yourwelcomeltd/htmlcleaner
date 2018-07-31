@@ -212,7 +212,7 @@ public class DomSerializer {
 
     	Document document = createDocument(rootNode);
 
-        createSubnodes(document, (Element)document.getDocumentElement(), rootNode.getAllChildren());
+        createSubnodes(document, document.getDocumentElement(), rootNode.getAllChildren());
 
         return document;
     }
@@ -307,9 +307,9 @@ public class DomSerializer {
     				Map<String, String> attributes =  subTagNode.getAttributes();
     				Iterator<Map.Entry<String, String>> entryIterator = attributes.entrySet().iterator();
     				while (entryIterator.hasNext()) {
-    					Map.Entry<String, String> entry = (Map.Entry<String, String>) entryIterator.next();
-    					String attrName = (String) entry.getKey();
-    					String attrValue = (String) entry.getValue();
+    					Map.Entry<String, String> entry = entryIterator.next();
+    					String attrName = entry.getKey();
+    					String attrValue = entry.getValue();
     					if (escapeXml) {
     						attrValue = Utils.escapeXml(attrValue, props, true);
     					}
