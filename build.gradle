@@ -6,7 +6,7 @@ repositories {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 9
@@ -38,11 +38,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
-    compile group: 'org.jdom', name: 'jdom2', version: '2.0.6'
+    implementation group: 'org.jdom', name: 'jdom2', version: '2.0.6'
 }
